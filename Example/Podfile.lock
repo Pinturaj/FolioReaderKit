@@ -20,7 +20,7 @@ PODS:
   - ZFDragableModalTransition (0.6)
 
 DEPENDENCIES:
-  - FolioReaderKit (from `https://github.com/pinturajput91/FolioReaderKit.git`, branch `master`)
+  - FolioReaderKit (from `https://github.com/Pinturaj/FolioReaderKit.git`, branch `main`)
   - Nimble (= 7.3.1)
   - Quick (= 1.3.2)
 
@@ -38,13 +38,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   FolioReaderKit:
-    :branch: master
-    :git: https://github.com/pinturajput91/FolioReaderKit.git
+    :branch: main
+    :git: https://github.com/Pinturaj/FolioReaderKit.git
 
 CHECKOUT OPTIONS:
   FolioReaderKit:
-    :commit: 985ba48d1f72eb2ddd03487ab1e80a4d6bf68256
-    :git: https://github.com/pinturajput91/FolioReaderKit.git
+    :commit: 34e81bced7bfb5ca422dcae8ec2ffcee2d25910a
+    :git: https://github.com/Pinturaj/FolioReaderKit.git
 
 SPEC CHECKSUMS:
   AEXML: 601f41fcaa7bda7605cad153b0f43db9ec006c0f
@@ -58,6 +58,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
   ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
 
-PODFILE CHECKSUM: c5a13234d5ce352c5417f7c440f17c3f8a3192a6
+PODFILE CHECKSUM: 0d526a18e7b2745dd4c2fcc13f6eb6140c7129d0
 
 COCOAPODS: 1.12.1

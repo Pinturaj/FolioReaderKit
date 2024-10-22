@@ -6,11 +6,11 @@ Pod::Spec.new do |s|
                    Written in Swift.
                    The Best Open Source ePub Reader.
                    DESC
-  s.homepage         = "https://github.com/FolioReader/FolioReaderKit"
+  s.homepage         = "https://github.com/Pinturaj/FolioReaderKit"
   s.screenshots     = "https://raw.githubusercontent.com/FolioReader/FolioReaderKit/assets/custom-fonts.gif", "https://raw.githubusercontent.com/FolioReader/FolioReaderKit/assets/highlight.gif"
   s.license          = 'BSD'
   s.author           = { "Heberti Almeida" => "hebertialmeida@gmail.com" }
-  s.source           = { :git => "https://github.com/FolioReader/FolioReaderKit.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/Pinturaj/FolioReaderKit.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/hebertialmeida'
 
   s.swift_version = '5.0'
