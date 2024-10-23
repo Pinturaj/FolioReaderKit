@@ -16,6 +16,7 @@ internal let kCurrentFontFamily = "com.folioreader.kCurrentFontFamily"
 internal let kCurrentFontSize = "com.folioreader.kCurrentFontSize"
 internal let kCurrentAudioRate = "com.folioreader.kCurrentAudioRate"
 internal let kCurrentHighlightStyle = "com.folioreader.kCurrentHighlightStyle"
+internal let kCurrentUnderlineStyle = "com.folioreader.kCurrentUnderlineStyle"
 internal let kCurrentMediaOverlayStyle = "com.folioreader.kMediaOverlayStyle"
 internal let kCurrentScrollDirection = "com.folioreader.kCurrentScrollDirection"
 internal let kNightMode = "com.folioreader.kNightMode"
@@ -250,6 +251,14 @@ extension FolioReader {
         get { return self.defaults.integer(forKey: kCurrentHighlightStyle) }
         set (value) {
             self.defaults.set(value, forKey: kCurrentHighlightStyle)
+        }
+    }
+    
+    /// Check the current highlight style.Default 0
+    open var currentUnderlineStyle: Int {
+        get { return self.defaults.integer(forKey: kCurrentUnderlineStyle) }
+        set (value) {
+            self.defaults.set(value, forKey: kCurrentUnderlineStyle)
         }
     }
 

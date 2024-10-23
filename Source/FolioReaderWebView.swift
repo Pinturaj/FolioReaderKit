@@ -64,6 +64,7 @@ open class FolioReaderWebView: WKWebView {
             return false
         } else {
             if action == #selector(highlight(_:))
+                || action == #selector(underline(_:))
                 || action == #selector(highlightWithNote(_:))
                 || action == #selector(updateHighlightNote(_:))
                 || (action == #selector(define(_:)) && isOneWord)
@@ -183,6 +184,48 @@ open class FolioReaderWebView: WKWebView {
         }
         
     }
+    
+    @objc func underline(_ sender: UIMenuController?) {
+        
+        // Execute JavaScript to underline the selected text
+        js("underlineString('\(HighlightStyle.classForStyle(self.folioReader.currentUnderlineStyle))')") { underlineAndReturn in
+            print("JavaScript returned: \(String(describing: underlineAndReturn))")
+            
+            guard let underlineAndReturn = underlineAndReturn else {
+                print("underlineAndReturn is nil")
+                return
+            }
+            
+            let jsonData = underlineAndReturn.data(using: String.Encoding.utf8)
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: jsonData!, options: []) as! NSArray
+                let dic = json.firstObject as! [String: String]
+                let rect = NSCoder.cgRect(for: dic["rect"]!)
+                guard let startOffset = dic["startOffset"] else { return }
+                guard let endOffset = dic["endOffset"] else { return }
+                
+                self.createMenu(options: true)
+                self.setMenuVisible(true, andRect: rect)
+                
+                // Persist underline details
+                self.js("getHTML()") { html in
+                    guard let html = html, let identifier = dic["id"], let bookId = (self.book.name as NSString?)?.deletingPathExtension
+                    else {
+                        return
+                    }
+                    let pageNumber = self.folioReader.readerCenter?.currentPageNumber ?? 0
+                    let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
+                    let highlight = Highlight.matchHighlight(match)
+                    highlight?.persist(withConfiguration: self.readerConfig)
+                }
+            } catch {
+                print("Could not receive JSON")
+            }
+        }
+    }
+
+
     
     @objc func highlightWithNote(_ sender: UIMenuController?) {
         
@@ -306,6 +349,7 @@ open class FolioReaderWebView: WKWebView {
         let menuController = UIMenuController.shared
 
         let highlightItem = UIMenuItem(title: self.readerConfig.localizedHighlightMenu, action: #selector(highlight(_:)))
+        let underlineNoteItem = UIMenuItem(title: self.readerConfig.localizedUnderlineMenu, action: #selector(underline(_:)))
         let highlightNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(highlightWithNote(_:)))
         let editNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(updateHighlightNote(_:)))
         let playAudioItem = UIMenuItem(title: self.readerConfig.localizedPlayMenu, action: #selector(play(_:)))

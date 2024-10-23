@@ -104,6 +104,50 @@ function highlightString(style) {
     return JSON.stringify(params);
 }
 
+function underlineString(style) {
+    try {
+        var range = window.getSelection().getRangeAt(0);
+        var startOffset = range.startOffset;
+        var endOffset = range.endOffset;
+        var selectionContents = range.extractContents();
+        
+        // Create an underline element
+        var elm = document.createElement("u"); // "u" tag for underline
+        var id = guid(); // Generate a unique ID for the underline element
+        
+        // Append the selected contents inside the underline element
+        elm.appendChild(selectionContents);
+        elm.setAttribute("id", id);
+        elm.setAttribute("onclick", "callHighlightURL(this);");
+        elm.setAttribute("class", style);
+
+        // Set the underline color using the style attribute
+//        elm.setAttribute("style", "text-decoration-color: " + color + ";");
+        
+        
+        // Insert the underline element back into the document at the selected range
+        range.insertNode(elm);
+        
+        // Get the rectangle and offsets for the selected text
+        var params = [];
+        params.push({
+            id: id,
+            rect: getRectForSelectedText(elm),
+            startOffset: startOffset.toString(),
+            endOffset: endOffset.toString()
+        });
+        
+        // Return the result as a JSON string
+        return JSON.stringify(params);
+        
+    } catch (e) {
+        console.log("Error in underlineString: ", e);
+        return null;
+    }
+}
+
+
+
 function highlightStringWithNote(style) {
     var range = window.getSelection().getRangeAt(0);
     var startOffset = range.startOffset;
