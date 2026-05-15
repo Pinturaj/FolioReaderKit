@@ -267,12 +267,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let fontIcon = UIImage(readerImageNamed: "icon-navbar-font")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let space = 70 as CGFloat
 
-        let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
+        let closeButton = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
 
-        navigationItem.leftBarButtonItems = [menu, toc]
+        // TOC (3-lines) on the left, close button on the right to prevent accidental closes
+        navigationItem.leftBarButtonItems = [toc]
 
         var rightBarIcons = [UIBarButtonItem]()
+        
+        rightBarIcons.append(closeButton)
 
         if (self.readerConfig.allowSharing == true) {
             rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareChapter(_:))))
@@ -507,10 +510,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if #available(iOS 11.0, *) {
             let orientation = UIDevice.current.orientation
             
-            if orientation == .portrait || orientation == .portraitUpsideDown {
-                if readerConfig.scrollDirection == .horizontal {
-                    size.height = size.height - view.safeAreaInsets.bottom
-                }
+            if orientation == .portrait || orientation == .portraitUpsideDown || orientation == .unknown || orientation == .faceUp || orientation == .faceDown {
+                size.height = size.height - view.safeAreaInsets.bottom
             }
         }
         
@@ -1348,6 +1349,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
 
         let nav = UINavigationController(rootViewController: pageController)
+        nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
     }
 

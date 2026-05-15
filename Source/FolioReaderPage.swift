@@ -131,12 +131,23 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
         let navTotal = self.readerConfig.shouldHideNavigationOnTap ? 0 : statusbarHeight + navBarHeight
         let paddingTop: CGFloat = 20
         let paddingBottom: CGFloat = 30
+        
+        // Account for page indicator height at the bottom
+        let pageIndicatorHeight: CGFloat = self.folioReader.readerCenter?.pageIndicatorHeight ?? 0
+        
+        // Account for safe area bottom on devices with home indicator
+        var safeAreaBottom: CGFloat = 0
+        if #available(iOS 11.0, *) {
+            safeAreaBottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
+        
+        let bottomOffset = pageIndicatorHeight + safeAreaBottom
 
         return CGRect(
             x: bounds.origin.x,
             y: self.readerConfig.isDirection(bounds.origin.y + navTotal, bounds.origin.y + navTotal + paddingTop, bounds.origin.y + navTotal),
             width: bounds.width,
-            height: self.readerConfig.isDirection(bounds.height - navTotal, bounds.height - navTotal - paddingTop - paddingBottom, bounds.height - navTotal)
+            height: self.readerConfig.isDirection(bounds.height - navTotal - bottomOffset, bounds.height - navTotal - paddingTop - paddingBottom, bounds.height - navTotal - bottomOffset)
         )
     }
 
