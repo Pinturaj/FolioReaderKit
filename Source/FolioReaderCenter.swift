@@ -1349,6 +1349,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
 
         let nav = UINavigationController(rootViewController: pageController)
+        nav.modalPresentationStyle = .fullScreen
         
         present(nav, animated: true, completion: nil)
     }
