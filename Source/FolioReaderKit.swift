@@ -165,7 +165,7 @@ extension FolioReader {
         Bool = true) {
         let readerContainer = FolioReaderContainer(withConfig: config, folioReader: self, epubPath: epubPath, unzipPath: unzipPath, removeEpub: shouldRemoveEpub)
         self.readerContainer = readerContainer
-        readerContainer.modalPresentationStyle = .fullScreen
+        // Use default pageSheet presentation style (iOS 13+)
         parentViewController.present(readerContainer, animated: animated, completion: nil)
         addObservers()
     }
