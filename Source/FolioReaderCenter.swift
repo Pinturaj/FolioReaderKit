@@ -267,15 +267,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let fontIcon = UIImage(readerImageNamed: "icon-navbar-font")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let space = 70 as CGFloat
 
-        let closeButton = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
+        let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
 
-        // TOC (3-lines) on the left, close button on the right to prevent accidental closes
-        navigationItem.leftBarButtonItems = [toc]
+        navigationItem.leftBarButtonItems = [menu, toc]
 
         var rightBarIcons = [UIBarButtonItem]()
         
-        rightBarIcons.append(closeButton)
+        
 
         if (self.readerConfig.allowSharing == true) {
             rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareChapter(_:))))
@@ -1339,8 +1338,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
      */
     @objc func presentChapterList(_ sender: UIBarButtonItem) {
         folioReader.saveReaderState()
+        
+        guard let readerContainer = self.readerContainer else { return }
 
-        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
+        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: readerContainer.book, delegate: self)
         let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
         let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
 
@@ -1350,8 +1351,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let nav = UINavigationController(rootViewController: pageController)
         nav.modalPresentationStyle = .fullScreen
-        
-        present(nav, animated: true, completion: nil)
+        readerContainer.present(nav, animated: true, completion: nil)
     }
 
     /**

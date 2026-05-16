@@ -55,7 +55,7 @@ class FolioReaderChapterList: UITableViewController {
         self.tableView.estimatedRowHeight = 50
 
         // Create TOC list
-        self.tocItems = self.book.flatTableOfContents
+        self.tocItems = self.book.flatTableOfContents ?? []
     }
 
     // MARK: - Table view data source
